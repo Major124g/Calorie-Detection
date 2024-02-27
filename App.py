@@ -6,6 +6,8 @@ import numpy as np
 from keras.preprocessing.image import load_img, img_to_array
 from keras.models import load_model
 import time
+from supa import *
+from cameraSave import *
 
 model = load_model('MODEL.h5')
 
@@ -16,18 +18,6 @@ labels= {0:'apple_pie',1: 'chicken_curry',2: 'chocolate_cake',
          3:'donuts',4: 'dumplings',5: 'french_fries',
          6:'fried_rice',7:'ice_cream',8: 'omelette',
          9:'pizza',10:'samosa',11:'spaghetti'}
-# labels = {0: 'apple', 1: 'banana', 2: 'beetroot', 3: 'bell pepper', 4: 'cabbage', 5: 'capsicum', 6: 'carrot',
-#           7: 'cauliflower', 8: 'chilli pepper', 9: 'corn', 10: 'cucumber', 11: 'eggplant', 12: 'garlic', 13: 'ginger',
-#           14: 'grapes', 15: 'jalepeno', 16: 'kiwi', 17: 'lemon', 18: 'lettuce',
-#           19: 'mango', 20: 'onion', 21: 'orange', 22: 'paprika', 23: 'pear', 24: 'peas', 25: 'pineapple',
-#           26: 'pomegranate', 27: 'potato', 28: 'raddish', 29: 'soy beans', 30: 'spinach', 31: 'sweetcorn',
-#           32: 'sweetpotato', 33: 'tomato', 34: 'turnip', 35: 'watermelon'}
-# fruits = ['Apple', 'Banana', 'Bello Pepper', 'Chilli Pepper', 'Grapes', 'Jalepeno', 'Kiwi', 'Lemon', 'Mango', 'Orange',
-#           'Paprika', 'Pear', 'Pineapple', 'Pomegranate', 'Watermelon']
-# vegetables = ['Beetroot', 'Cabbage', 'Capsicum', 'Carrot', 'Cauliflower', 'Corn', 'Cucumber', 'Eggplant', 'Ginger',
-#               'Lettuce', 'Onion', 'Peas', 'Potato', 'Raddish', 'Soy Beans', 'Spinach', 'Sweetcorn', 'Sweetpotato',
-#               'Tomato', 'Turnip']
-
 
 def fetch_calories(prediction):
     try:
@@ -59,6 +49,9 @@ def prepare_image(img_path):
 
 def run():
     st.title("Calorie Detection System Using Image Processing")
+
+    weight_data = fetch_weight_data()  # Call fetch_weight_data to get weight data
+    
     st.image("welcome.jpg")
     st.write("""Welcome to the Calorie Detection system - the fast and easy way to identify 
              the calories in different types of food we consume in a daily basis. 
@@ -66,6 +59,13 @@ def run():
               is a major project from BEI076.The model is trained on a large dataset 
              of annotated food images, and is capable of detecting calories of some 
              foods like apple_pie, donuts, dumplings, chocolate_cake etc. """)
+    
+    x = abs(display_weight_data(weight_data))
+    st.subheader(f"Click 'Capture Image' to Detect the food")
+
+    #Call CameraSave1.py here
+    #main()
+
     img_file = st.file_uploader("Choose an Image", type=["jpg", "png"])
     if img_file is not None:
         img = Image.open(img_file).resize((250, 250))
@@ -83,38 +83,48 @@ def run():
                                         1, text=progress_text)    
             if img_file is not None:
                 result = prepare_image(save_image_path)
-                # if result in vegetables:
-                #     st.info('**Category : Vegetables**')
-                # else:
-                #     st.info('**Category : Fruit**')
+                
                 st.success("**Predicted : " + result + '**')
-                #cal = fetch_calories(result)
-                # if cal:
-                #     st.warning('**' + cal + '(100 grams)**')
+                
+                # st.warning("The given weight is equals to "+str(x)+" gm.")
+                st.success("The given weight is equals to "+str(x) +" gm.")
+
                 if result=='Apple_pie':
-                    st.warning("Calories : 237 Kcal(100gm)")
+                    #st.warning("Calories : 237 Kcal(100gm)")
+                    st.warning("The total calorie in the given Apple_pie is="+ str(x*2.37))
                 elif result=='Chicken_curry':
-                    st.warning("Calories : 110 Kcal(100gm)")
+                    #st.warning("Calories : 110 Kcal(100gm)")
+                    st.warning("The total calorie in the given Chicken curry="+ str(x*1.1))
                 elif result=='Chocolate_cake':
-                    st.warning("Calories : 371 Kcal(100gm)")
+                    #st.warning("Calories : 371 Kcal(100gm)")
+                    st.warning("The total calorie in the given Chocolate_cake is="+ str(x*3.71))
                 elif result=='Donuts':
-                    st.warning("Calories : 412 Kcal(100gm)")
+                    #st.warning("Calories : 412 Kcal(100gm)")
+                    st.warning("The total calorie in the given Donuts is="+ str(x*4.12))
                 elif result=='Dumplings':
-                    st.warning("Calories : 124 Kcal(100gm)")
+                    #st.warning("Calories : 124 Kcal(100gm)")
+                    st.warning("The total calorie in the given Dumplings is="+ str(x*1.24))
                 elif result=='French_fries':
-                    st.warning("Calories : 296 Kcal(100gm)")
+                    #st.warning("Calories : 296 Kcal(100gm)")
+                    st.warning("The total calorie in the given French Fries is="+ str(x*2.96))
                 elif result=='Fried_rice':
-                    st.warning("Calories : 168 Kcal(100gm)")
+                    #st.warning("Calories : 168 Kcal(100gm)")
+                    st.warning("The total calorie in the given Fried rice is="+ str(x*1.68))
                 elif result=='Ice_cream':
-                    st.warning("Calories : 201 Kcal(100gm)")
+                    #st.warning("Calories : 201 Kcal(100gm)")
+                    st.warning("The total calorie in the given Ice-cream is="+ str(x*2.01))
                 elif result=='Omelette':
-                    st.warning("Calories : 153 Kcal(100gm)")
+                    #st.warning("Calories : 153 Kcal(100gm)")
+                    st.warning("The total calorie in the given Omelette is="+ str(x*1.53))
                 elif result=='Pizza':
-                    st.warning("Calories : 301 Kcal(100gm)")
+                    #st.warning("Calories : 301 Kcal(100gm)")
+                    st.warning("The total calorie in the given Pizza is="+ str(x*3.01))
                 elif result=='Samosa':
-                    st.warning("Calories : 308 Kcal(100gm)")
+                    #st.warning("Calories : 308 Kcal(100gm)")
+                    st.warning("The total calorie in the given Samosa is="+ str(x*3.08))
                 elif result=='Spaghetti':
-                    st.warning("Calories : 155 Kcal(100gm)")
+                    #st.warning("Calories : 155 Kcal(100gm)")
+                    st.warning("The total calorie in the given Spaghetti is="+ str(x*1.55))
                 else:
                     st.warning("Out of Dataset.")
 
